@@ -7,7 +7,10 @@ export default function Header({ showForm, onToggleForm }:HeaderProps) {
 
     return (
         <>
-            <h1>Today i learned</h1>
+            <div>    
+                <span>🧠</span>
+                <h1>Hoje eu aprendi</h1>
+            </div>
             <button onClick={onToggleForm}>
                 { showForm ? 'Fechar' : 'Novo fato'}
             </button>
