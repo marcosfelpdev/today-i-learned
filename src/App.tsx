@@ -1,8 +1,9 @@
 import { useDeferredValue, useState } from "react";
 import type { Fact } from "./types";
 import Header from "./components/Header.tsx";
-import FactItem from "./components/FactItem";
 import FactList from "./components/FactList";
+// import NewItem from "./components/NewItem.tsx";
+import CategoryFilter from "./components/CategoryFilter.tsx";
 
 const INITIAL_FACTS: Fact[] = [{
   id: 1,
@@ -46,11 +47,22 @@ export default function App(){
     setShowForm(show => !show)
   }
 
+  function handleSelectCategory(category: string){
+    setCurrentCategory(category)
+  }
+
   return (
     <>
-      <Header showForm={showForm} onToggleForm={handleToggleForm}/>
+      <Header 
+        showForm={showForm}
+        onToggleForm={handleToggleForm}/>
       { showForm && <p>Aqui conterá um formulário</p>}
       <main>
+        <CategoryFilter
+          currentCategory={currentCategory}
+          onSelectCategory={handleSelectCategory}
+
+        />
         <FactList facts={displayedFacts}/>
       </main>
     </>
