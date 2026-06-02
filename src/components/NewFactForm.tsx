@@ -1,5 +1,6 @@
 import type { RefObject } from "react"
 import { useState } from "react"
+import { CATEGORIES } from "../constants"
 
 interface NewFactFormProps {
     inputRef: RefObject<HTMLInputElement>
@@ -13,11 +14,18 @@ export default function NewFactForm ({ inputRef }: NewFactFormProps ) {
 
     const charRemaining = 200 - text.length
 
-    function handleSubmit ( event: React.FormEvent<HTMLFormElement> ) {
+    function handleSubmit ( event: React.SubmitEvent<HTMLFormElement> ) {
         event.preventDefault()
         console.log({ text, source, category })
         
     }
+
+
+    const categoryOptions = CATEGORIES.map((category) => (
+        <option key={category.value}value={category.value}>{category.label}</option>
+    ))
+
+
 
     return (
         <>
@@ -42,6 +50,7 @@ export default function NewFactForm ({ inputRef }: NewFactFormProps ) {
                     onChange={event => setCategory(event.target.value)}
                 >
                     <option value="">Selecione uma categoria</option>
+                    {categoryOptions}
                 </select>
                 <button type="submit">publicar</button>
             </form>

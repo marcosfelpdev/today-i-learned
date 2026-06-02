@@ -1,9 +1,10 @@
-import { useDeferredValue, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { Fact } from "./types";
 import Header from "./components/Header.tsx";
 import FactList from "./components/FactList";
 // import NewItem from "./components/NewItem.tsx";
 import CategoryFilter from "./components/CategoryFilter.tsx";
+import NewFactForm from "./components/NewFactForm.tsx";
 
 const INITIAL_FACTS: Fact[] = [{
   id: 1,
@@ -51,12 +52,18 @@ export default function App(){
     setCurrentCategory(category)
   }
 
+  const formInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if(showForm) formInputRef.current?.focus()
+  },[showForm])
+
   return (
     <>
       <Header 
         showForm={showForm}
         onToggleForm={handleToggleForm}/>
-      { showForm && <p>Aqui conterá um formulário</p>}
+      { showForm && <NewFactForm inputRef={formInputRef}/>}
       <main>
         <CategoryFilter
           currentCategory={currentCategory}
