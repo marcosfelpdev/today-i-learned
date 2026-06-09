@@ -64,7 +64,7 @@ export default function App(){
         showForm={showForm}
         onToggleForm={handleToggleForm}/>
       { showForm && <NewFactForm inputRef={formInputRef}/>}
-      <main>
+      <main className="flex gap-6">
         <CategoryFilter
           currentCategory={currentCategory}
           onSelectCategory={handleSelectCategory}
