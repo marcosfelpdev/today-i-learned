@@ -5,7 +5,7 @@ import { factSchema } from "./schemas"
 import { success } from "zod"
 
 interface NewFactFormProps {
-    inputRef: RefObject<HTMLInputElement>
+    inputRef: RefObject<HTMLInputElement | null>
 }
 
 
