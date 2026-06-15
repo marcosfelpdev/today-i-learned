@@ -1,5 +1,6 @@
 import type { Fact } from "../types";
 import FactItem from "./FactItem";
+import { styles } from "../classes";
 
 interface FactListProps {
     facts: Fact[]
@@ -12,7 +13,7 @@ export default function FactList({ facts }: FactListProps) {
 
     return (
         <>
-            <ul className="flex flex-col gap-4 grow">
+            <ul className={styles.lista}>
                 {facts.map(fact=> <FactItem key={fact.id} fact={fact} />)}
             </ul>
         </>

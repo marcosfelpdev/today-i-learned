@@ -1,5 +1,6 @@
 import type { Fact } from "../types";
 import { CATEGORIES } from "../constants";
+import { styles } from "../classes";
 
 interface FactItemProps {
     fact: Fact
@@ -12,13 +13,13 @@ export default function FactItem({ fact }: FactItemProps) {
 
     return (
         <>
-            <li className="py-4 px-6 flex gap-6 justify-between bg-stone-700 rounded-2xl">
-                <div className="flex gap-3">
+            <li className={styles.itemLista}>
+                <div className={styles.divItem}>
                     <p>{fact.text}</p>
                     <a href={fact.source} 
                         target="_blank" 
                         rel="noreferrer" 
-                        className="text-stone-400 capitalize transition duration-300 hover:text-sky-600">(Fonte)</a>
+                        className={styles.linkItemLista}>(Fonte)</a>
                 </div>
                 <span>{ category?.label}</span>
             </li>

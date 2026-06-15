@@ -5,6 +5,7 @@ import FactList from "./components/FactList";
 // import NewItem from "./components/NewItem.tsx";
 import CategoryFilter from "./components/CategoryFilter.tsx";
 import NewFactForm from "./components/NewFactForm.tsx";
+import { styles } from "./classes.ts";
 
 const INITIAL_FACTS: Fact[] = [{
   id: 1,
@@ -64,7 +65,7 @@ export default function App(){
         showForm={showForm}
         onToggleForm={handleToggleForm}/>
       { showForm && <NewFactForm inputRef={formInputRef}/>}
-      <main className="flex gap-6">
+      <main className={styles.main}>
         <CategoryFilter
           currentCategory={currentCategory}
           onSelectCategory={handleSelectCategory}
