@@ -4,9 +4,19 @@ import { styles } from "../classes";
 
 interface FactListProps {
     facts: Fact[]
+    isLoading: boolean
+    error: string | null
 }
 
-export default function FactList({ facts }: FactListProps) {
+export default function FactList({ facts, isLoading, error }: FactListProps) {
+    if (isLoading){
+        return <p>Carregando fatos...</p>
+    }
+
+    if(error){
+        return <p>{error}</p>
+    }
+
     if (facts.length === 0) {
         return <p>Ainda não há fatos para esa categoria! Crie o primeiro! 👌 </p>
     }

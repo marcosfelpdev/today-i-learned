@@ -6,44 +6,15 @@ import FactList from "./components/FactList";
 import CategoryFilter from "./components/CategoryFilter.tsx";
 import NewFactForm from "./components/NewFactForm.tsx";
 import { styles } from "./classes.ts";
+import { supabase } from "./supabaseClient";
 
-const INITIAL_FACTS: Fact[] = [{
-  id: 1,
-  text: 'React foi criado e liberado pelo facebook em 2013.',
-  source: 'https://react.dev',
-  category: 'technology',
-  votes_interesting: 23,
-  votes_mindblowing: 9,
-  votes_false: 1,
-  created_at: '2026-05-12T11:16:00-03:00'
-}, {
-  id: 2,
-  text: 'O cérebro humano tem aproximadamente 86 bilhões de neurônios.',
-  source: 'https://www.ncbi.nlm.nih.gov',
-  category: 'science',
-  votes_interesting: 23,
-  votes_mindblowing: 9,
-  votes_false: 1,
-  created_at: '2026-04-12T11:16:00-03:00'
-}, {
-  id: 3,
-  text: 'O Brasil é o maior produtor de café a mais de 150 anos.',
-  source: 'https://www.embrapa.br',
-  category: 'history',
-  votes_interesting: 23,
-  votes_mindblowing: 10298,
-  votes_false: 1,
-  created_at: '2026-03-12T11:16:00-03:00'
-}]
 
 export default function App(){
-  const [facts, setFacts] = useState<Fact[]>(INITIAL_FACTS);
+  const [facts, setFacts] = useState<Fact[]>([]);
   const [currentCategory, setCurrentCategory] = useState<string>('all');
   const [showForm, setShowForm] = useState<boolean>(false);
-
-  const displayedFacts = currentCategory === 'all'
-    ? facts
-    : facts.filter(fact => fact.category === currentCategory);
+  const [isLoading, setisLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   function handleToggleForm() {
     setShowForm(show => !show)
@@ -59,6 +30,37 @@ export default function App(){
     if(showForm) formInputRef.current?.focus()
   },[showForm])
 
+  useEffect(()=>{
+    async function loadFacts(){
+        setisLoading(true)
+
+        let query = supabase
+          .from('facts')
+          .select('*')
+          .order('created_at', {ascending: false})
+
+        if(currentCategory !== 'all'){
+          query = query.eq('category', currentCategory)
+        }
+
+        const { data, error } = await query;
+
+        if(error) {
+          setError('Não foi possível carregar os fatos. Tente novamente.')
+          setisLoading(false)
+          return
+        }
+
+        setFacts(data as Fact[])
+        setisLoading(false)
+
+    }
+
+    loadFacts()
+  }, [currentCategory])
+
+
+
   return (
     <>
       <Header 
@@ -71,7 +73,12 @@ export default function App(){
           onSelectCategory={handleSelectCategory}
 
         />
-        <FactList facts={displayedFacts}/>
+        <FactList 
+          facts={facts}
+          isLoading={isLoading}
+          error={error}
+        
+        />
       </main>
     </>
   )
