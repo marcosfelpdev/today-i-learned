@@ -30,34 +30,35 @@ export default function App(){
     if(showForm) formInputRef.current?.focus()
   },[showForm])
 
-  useEffect(()=>{
-    async function loadFacts(){
-        setisLoading(true)
+  async function loadFacts(){
+    setisLoading(true)
 
-        let query = supabase
-          .from('facts')
-          .select('*')
-          .order('created_at', {ascending: false})
+    let query = supabase
+      .from('facts')
+      .select('*')
+      .order('created_at', {ascending: false})
 
-        if(currentCategory !== 'all'){
-          query = query.eq('category', currentCategory)
-        }
-
-        const { data, error } = await query;
-
-        if(error) {
-          setError('Não foi possível carregar os fatos. Tente novamente.')
-          setisLoading(false)
-          return
-        }
-
-        setFacts(data as Fact[])
-        setisLoading(false)
-
+    if(currentCategory !== 'all'){
+      query = query.eq('category', currentCategory)
     }
 
+    const { data, error } = await query;
+
+    if(error) {
+      setError('Não foi possível carregar os fatos. Tente novamente.')
+      setisLoading(false)
+      return
+    }
+
+    setFacts(data as Fact[])
+    setisLoading(false)
+
+  }
+
+  useEffect(()=>{
     loadFacts()
   }, [currentCategory])
+
 
 
 
@@ -66,7 +67,13 @@ export default function App(){
       <Header 
         showForm={showForm}
         onToggleForm={handleToggleForm}/>
-      { showForm && <NewFactForm inputRef={formInputRef}/>}
+      { showForm && (
+        <NewFactForm 
+          inputRef={formInputRef}
+          onAddFact={loadFacts}
+        />
+
+      )}
       <main className={styles.main}>
         <CategoryFilter
           currentCategory={currentCategory}
@@ -77,6 +84,7 @@ export default function App(){
           facts={facts}
           isLoading={isLoading}
           error={error}
+          onVote={loadFacts}
         
         />
       </main>

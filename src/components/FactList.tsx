@@ -6,9 +6,10 @@ interface FactListProps {
     facts: Fact[]
     isLoading: boolean
     error: string | null
+    onVote: () => Promise<void>
 }
 
-export default function FactList({ facts, isLoading, error }: FactListProps) {
+export default function FactList({ facts, isLoading, error, onVote }: FactListProps) {
     if (isLoading){
         return <p>Carregando fatos...</p>
     }
@@ -24,7 +25,7 @@ export default function FactList({ facts, isLoading, error }: FactListProps) {
     return (
         <>
             <ul className={styles.lista}>
-                {facts.map(fact=> <FactItem key={fact.id} fact={fact} />)}
+                {facts.map(fact=> <FactItem key={fact.id} fact={fact} onVote={onVote}/>)}
             </ul>
         </>
     )
